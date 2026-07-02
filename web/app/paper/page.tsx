@@ -7,7 +7,7 @@ import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 
 export const metadata = {
-  title: "Paper — Hedge-Ratio Optimization Under Uncertain Redemption Demand",
+  title: "Paper: Hedge-Ratio Optimization Under Uncertain Redemption Demand",
 };
 
 export default function PaperPage() {

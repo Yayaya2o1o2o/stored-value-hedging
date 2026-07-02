@@ -55,7 +55,7 @@ export default function ResultsPage() {
 
       {/* forecasting */}
       <section className="border-t border-hairline py-10">
-        <p className="eyebrow">Table 1 — one-step-ahead forecast accuracy (146-day test window)</p>
+        <p className="eyebrow">Table 1: one-step-ahead forecast accuracy (146-day test window)</p>
         <table className="mt-4 w-full max-w-xl border-collapse font-mono text-sm">
           <thead>
             <tr className="border-t-2 border-b border-ink text-left">
@@ -86,8 +86,8 @@ export default function ResultsPage() {
           </tbody>
         </table>
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
-          The seasonal ARIMA wins on both metrics — weekly seasonality and
-          payday structure are exactly what a linear seasonal model captures —
+          The seasonal ARIMA wins on both metrics. Weekly seasonality and
+          payday structure are exactly what a linear seasonal model captures,
           so its forecast (mean daily redemption ≈ $
           {Math.round(forecasting.mean_daily_redemption).toLocaleString()},
           forecast cv {forecasting.forecast_cv.toFixed(3)}) feeds the
@@ -106,7 +106,7 @@ export default function ResultsPage() {
 
       {/* h* heatmap */}
       <section className="border-t border-hairline py-10">
-        <p className="eyebrow">Figure — optimal hedge ratio h* across the 3×3 grid</p>
+        <p className="eyebrow">Figure: optimal hedge ratio h* across the 3×3 grid</p>
         <div className="mt-6 grid max-w-2xl grid-cols-[auto_1fr_1fr_1fr] gap-px bg-hairline font-mono text-sm">
           <div className="bg-paper p-3" />
           {["cv low", "cv medium", "cv high"].map((c) => (
@@ -144,7 +144,7 @@ export default function ResultsPage() {
 
       {/* objective curves */}
       <section className="border-t border-hairline py-10">
-        <p className="eyebrow">Figure — objective J(h) by volatility (medium demand uncertainty)</p>
+        <p className="eyebrow">Figure: objective J(h) by volatility (medium demand uncertainty)</p>
         <div className="mt-6 h-[360px] w-full">
           <ResponsiveContainer>
             <LineChart data={curveData} margin={{ top: 10, right: 20, bottom: 10, left: 8 }}>
@@ -181,7 +181,7 @@ export default function ResultsPage() {
 
       {/* savings */}
       <section className="border-t border-hairline py-10">
-        <p className="eyebrow">Figure — optimizer savings vs. not hedging, % of procurement budget</p>
+        <p className="eyebrow">Figure: optimizer savings vs. not hedging, % of procurement budget</p>
         <div className="mt-6 h-[340px] w-full">
           <ResponsiveContainer>
             <BarChart data={savingsData} margin={{ top: 10, right: 12, bottom: 48, left: 8 }}>
@@ -210,7 +210,7 @@ export default function ResultsPage() {
           instructive failure is the other direction: a fixed
           trailing-average rule (h ≈ 0.96 regardless of conditions) happens to
           sit near the optimum in high-volatility cells but pays up to 0.83%
-          of budget in the regimes where the optimizer says not to hedge —
+          of budget in the regimes where the optimizer says not to hedge,
           static rules can be accidentally right, but only the optimizer knows
           when.
         </p>

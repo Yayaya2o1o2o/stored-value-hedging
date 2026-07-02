@@ -3,7 +3,7 @@ import ObjectiveCurve from "@/components/ObjectiveCurve";
 import { curves, grid } from "@/lib/model";
 
 export default function Home() {
-  // hero figure: the medium-volatility, medium-uncertainty objective —
+  // hero figure: the medium-volatility, medium-uncertainty objective,
   // the paper's thesis (an interior optimum) in one picture
   const heroCurve = curves["medium|medium"].map((p) => ({ h: p.h, J: p.J }));
   const heroCell = grid.find(
@@ -47,7 +47,7 @@ export default function Home() {
       {/* signature: the real objective curve */}
       <section className="border-y border-hairline py-10">
         <p className="eyebrow">
-          Figure — objective J(h), medium volatility × medium demand
+          Figure: objective J(h), medium volatility × medium demand
           uncertainty (12,000 Monte Carlo paths)
         </p>
         <div className="mt-6">
@@ -61,7 +61,7 @@ export default function Home() {
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
           The whole argument in one curve: hedge too little and spot exposure
           dominates; hedge too much and premium leakage plus the close-out
-          lottery on unused cover dominate. The optimum is interior — and it
+          lottery on unused cover dominate. The optimum is interior, and it
           moves with both price volatility and forecast quality.
         </p>
       </section>
@@ -76,7 +76,7 @@ export default function Home() {
             The gap this closes
           </h2>
           <p className="mt-4 leading-relaxed">
-            Institutional hedging research — airlines, utilities, fleets —
+            Institutional hedging research, airlines, utilities, fleets,
             assumes the hedger controls when and how much it consumes.
             Stored-value research forecasts how customers redeem prepaid
             balances, but stops at revenue recognition. A product that locks
@@ -95,7 +95,7 @@ export default function Home() {
           <p className="mt-4 leading-relaxed">
             A forecasting stage (seasonal ARIMA vs. LSTM) turns a two-year
             synthetic redemption panel into the two statistics a treasurer
-            would actually hold — expected demand and forecast error. A Monte
+            would actually hold: expected demand and forecast error. A Monte
             Carlo optimizer then chooses the hedge ratio minimizing a
             mean–dispersion objective over spot exposure, hedging premium,
             close-out of unused cover, margin capital, and redemption

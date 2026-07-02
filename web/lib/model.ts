@@ -63,43 +63,63 @@ function bracket(x: number, levels: number[]): [number, number] {
   return [levels.length - 2, 1];
 }
 
+export type FullPoint = {
+  h: number;
+  J: number;
+  mean: number;
+  std: number;
+  cvar: number;
+};
+
 /**
- * Bilinear interpolation of the simulated objective curves J(h) over
- * (volatility, forecast CV). Returns the interpolated 21-point curve.
+ * Bilinear interpolation of the simulated objective curves over
+ * (volatility, forecast CV), all four statistics, not just J.
  * Interpolating the curves (rather than h*) keeps the recommendation
  * consistent with the underlying Monte Carlo surface.
  */
+export function interpolateFull(sigma: number, cv: number): FullPoint[] {
+  const [vi, vw] = bracket(sigma, VOL_LEVELS);
+  const [ci, cw] = bracket(cv, CV_LEVELS);
+  const cells = [
+    { c: cellCurve(vi, ci), w: (1 - vw) * (1 - cw) },
+    { c: cellCurve(vi, ci + 1), w: (1 - vw) * cw },
+    { c: cellCurve(vi + 1, ci), w: vw * (1 - cw) },
+    { c: cellCurve(vi + 1, ci + 1), w: vw * cw },
+  ];
+  return cells[0].c.map((p, k) => {
+    const mix = (f: (q: CurvePoint) => number) =>
+      cells.reduce((s, { c, w }) => s + w * f(c[k]), 0);
+    return {
+      h: p.h,
+      J: mix((q) => q.J),
+      mean: mix((q) => q.mean_cost),
+      std: mix((q) => q.std),
+      cvar: mix((q) => q.cvar95),
+    };
+  });
+}
+
 export function interpolateCurve(
   sigma: number,
   cv: number
 ): { h: number; J: number }[] {
-  const [vi, vw] = bracket(sigma, VOL_LEVELS);
-  const [ci, cw] = bracket(cv, CV_LEVELS);
-  const c00 = cellCurve(vi, ci);
-  const c01 = cellCurve(vi, ci + 1);
-  const c10 = cellCurve(vi + 1, ci);
-  const c11 = cellCurve(vi + 1, ci + 1);
-  return c00.map((p, k) => ({
-    h: p.h,
-    J:
-      (1 - vw) * (1 - cw) * c00[k].J +
-      (1 - vw) * cw * c01[k].J +
-      vw * (1 - cw) * c10[k].J +
-      vw * cw * c11[k].J,
-  }));
+  return interpolateFull(sigma, cv).map((p) => ({ h: p.h, J: p.J }));
 }
 
 export type Recommendation = {
   hStar: number;
   J: number;
-  curve: { h: number; J: number }[];
+  mean: number;
+  std: number;
+  cvar: number;
+  curve: FullPoint[];
   savingsVsNoHedgePct: number;
   savingsVsHalfPct: number;
   savingsVsFullPct: number;
 };
 
 export function recommend(sigma: number, cv: number): Recommendation {
-  const curve = interpolateCurve(sigma, cv);
+  const curve = interpolateFull(sigma, cv);
   const best = curve.reduce((a, b) => (b.J < a.J ? b : a));
   const at = (h: number) =>
     curve.reduce((a, b) => (Math.abs(b.h - h) < Math.abs(a.h - h) ? b : a)).J;
@@ -107,6 +127,9 @@ export function recommend(sigma: number, cv: number): Recommendation {
   return {
     hStar: best.h,
     J: best.J,
+    mean: best.mean,
+    std: best.std,
+    cvar: best.cvar,
     curve,
     savingsVsNoHedgePct: pct(at(0)),
     savingsVsHalfPct: pct(at(0.5)),
