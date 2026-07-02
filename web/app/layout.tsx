@@ -30,6 +30,7 @@ const nav = [
   { href: "/", label: "Overview" },
   { href: "/model", label: "Interactive model" },
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/profitability", label: "Profitability" },
   { href: "/results", label: "Results" },
   { href: "/paper", label: "Paper" },
 ];

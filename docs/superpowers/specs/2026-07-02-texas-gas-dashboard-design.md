@@ -164,6 +164,29 @@ The region-hex prototype was upgraded to real station granularity:
   to a selected station and its H3 cell; roll-up/alerts use each metro's
   nearest cell.
 
+## Addendum (2026-07-02) — profitability model (`/profitability`)
+
+A customizable P&L for a gas price-lock business (paylo.shop: prepay to lock a
+per-gallon price for a year; hedge the locked gallons; keep the spread).
+
+- **Customizable database:** Supabase Postgres table
+  `hedging_profitability_scenarios` (project `stored-value-hedging`,
+  `qaoziayjxzemiagqovts`). Public RLS (demo); presets read-only, user scenarios
+  insert/update/delete. Seeded with Paylo Sip/Cruise/Fleet. Client via
+  `@supabase/supabase-js` (`lib/supabase.ts`, `lib/scenarios.ts`); env
+  `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- **Model (`lib/profitability.ts`):** deposit is the invested float; annual gas
+  **throughput** (gallons × locked price) is the hedge-exposure and interchange
+  base. Revenue = float income + fee + interchange + hedge spread. Fixed costs =
+  interest to user + processing + commission + opex + CAC. Hedge cost comes from
+  the optimizer: **expected** = mean cost E[N], **worst-case** = CVaR95, at h*
+  (hedged) vs h=0 (unhedged), scaled by throughput.
+- **Framing:** hedging is insurance — it costs expected margin (premium) to buy
+  tail protection (CVaR). Outputs: expected/worst × hedged/unhedged net,
+  premium, downside protected, protection ratio, margins, LTV:CAC, portfolio
+  roll-up. Pause note: creating this project required pausing the `versify`
+  Supabase project to free a free-tier slot.
+
 ## Out of scope
 - Real external price data, auth, persistence, mobile-first redesign
   (responsive but desktop-primary like the rest of the site).

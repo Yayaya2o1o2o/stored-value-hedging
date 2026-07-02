@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.0",
     "h3-js": "^4.5.0",
     "katex": "^0.17.0",
     "next": "16.2.10",
