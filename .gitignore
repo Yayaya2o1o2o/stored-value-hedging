@@ -4,3 +4,7 @@ web/.next/
 web/.vercel/
 __pycache__/
 .DS_Store
+.env
+.env.*
+*.pem
+*.key
