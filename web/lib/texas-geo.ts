@@ -18,7 +18,7 @@ const COS = Math.cos((31 * Math.PI) / 180); // mid-state latitude correction
 const PAD = 28;
 const SCALE = 62; // px per corrected degree
 
-function project(lon: number, lat: number): [number, number] {
+export function project(lon: number, lat: number): [number, number] {
   const x = PAD + (lon - LON_MIN) * COS * SCALE;
   const y = PAD + (LAT_MAX - lat) * SCALE;
   return [x, y];

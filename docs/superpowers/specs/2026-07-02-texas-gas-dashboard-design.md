@@ -143,6 +143,27 @@ from the full `hexes` array each tick. All computation client-side and cheap
   brand matches (cream/terracotta, correct fonts).
 - Deploy to Vercel (project already linked in `web/.vercel`).
 
+## Addendum (2026-07-02) — station-level H3 upgrade
+
+The region-hex prototype was upgraded to real station granularity:
+
+- **Real station database:** 10,584 Texas fueling stations pulled from the
+  OpenStreetMap Overpass API (real brands + coordinates: Valero, Shell, Exxon,
+  Chevron, QuikTrip, Buc-ee's, …) and snapshotted to `lib/stations.json`
+  (250 KB, no runtime dependency).
+- **H3 indexing:** every station is indexed into an H3 resolution-6 cell
+  (`h3-js`), yielding 1,874 occupied cells. Each cell runs the OU price; shocks
+  spread to H3 k-ring neighbors (`gridDisk`) — the hexagonal spread.
+- **Per-station prices:** each station carries a fixed ±~1.3% offset, so all
+  10,584 stations show distinct live prices while moving with their cell.
+- **Rendering:** `components/StationCanvas.tsx` draws all stations as points on
+  a `<canvas>`, repainted every 800 ms tick; click selects the nearest station.
+  The old `HexMap.tsx` / `gas-feed.ts` were removed.
+- **Engine:** `lib/gas-engine.ts` (framework-agnostic, built once via
+  `getEngine()`), driven by `lib/use-gas-engine.ts`. The region panel now binds
+  to a selected station and its H3 cell; roll-up/alerts use each metro's
+  nearest cell.
+
 ## Out of scope
 - Real external price data, auth, persistence, mobile-first redesign
   (responsive but desktop-primary like the rest of the site).
