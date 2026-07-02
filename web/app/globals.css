@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f7f4ec;
+  --paper-deep: #efe9db;
+  --ink: #211c15;
+  --ink-soft: #5c5346;
+  --terra: #c05b2e;
+  --slate: #4a6b8a;
+  --hairline: #e0d8c8;
+  --sage: #5a7d5a;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-terra: var(--terra);
+  --color-slate: var(--slate);
+  --color-hairline: var(--hairline);
+  --color-sage: var(--sage);
+  --font-display: var(--font-newsreader);
+  --font-body: var(--font-source-serif);
+  --font-mono: var(--font-plex-mono);
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-source-serif), Georgia, serif;
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--terra);
+  color: var(--paper);
+}
+
+.eyebrow {
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+/* paper (markdown) typography */
+.paper-body {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.paper-body h1 {
+  font-family: var(--font-newsreader), serif;
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 600;
+  margin: 0 0 1.5rem;
+}
+.paper-body h2 {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 2.5rem 0 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--hairline);
+}
+.paper-body h3 {
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.5rem;
+}
+.paper-body p { margin: 0 0 1rem; }
+.paper-body strong { font-weight: 700; }
+.paper-body em { font-style: italic; }
+.paper-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.875rem;
+  font-family: var(--font-plex-mono), monospace;
+}
+.paper-body th {
+  text-align: left;
+  border-top: 1.5px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding: 0.4rem 0.6rem;
+  font-weight: 600;
+}
+.paper-body td {
+  border-bottom: 1px solid var(--hairline);
+  padding: 0.4rem 0.6rem;
+}
+.paper-body hr { border: 0; border-top: 1px solid var(--hairline); margin: 2rem 0; }
+.paper-body .katex { font-size: 1em; }
+.paper-body .katex-display {
+  overflow-x: auto;
+  padding: 0.5rem 0;
+}
+
+/* slider styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--hairline);
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--terra);
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--terra);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--terra);
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--terra);
+  cursor: pointer;
+}
+input[type="range"]:focus-visible {
+  outline: 2px solid var(--terra);
+  outline-offset: 4px;
+}
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--terra);
+  outline-offset: 2px;
+}
+
+@keyframes drawline {
+  from { stroke-dashoffset: var(--dash, 1200); }
+  to { stroke-dashoffset: 0; }
+}
+.draw-curve {
+  stroke-dasharray: var(--dash, 1200);
+  animation: drawline 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+  stroke-dashoffset: var(--dash, 1200);
+}
+@keyframes fadeup {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeup 0.7s ease-out both; }
+.fade-up-1 { animation-delay: 0.05s; }
+.fade-up-2 { animation-delay: 0.15s; }
+.fade-up-3 { animation-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-curve { animation: none; stroke-dashoffset: 0; }
+  .fade-up, .fade-up-1, .fade-up-2, .fade-up-3 { animation: none; }
+  html { scroll-behavior: auto; }
+}
