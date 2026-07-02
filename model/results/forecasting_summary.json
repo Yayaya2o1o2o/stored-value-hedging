@@ -1,0 +1,16 @@
+{
+  "train_days": 584,
+  "test_days": 146,
+  "ARIMA": {
+    "MAE": 4736.591968857395,
+    "RMSE": 5919.602735298332
+  },
+  "LSTM": {
+    "MAE": 4865.005591519775,
+    "RMSE": 6128.87323026193
+  },
+  "winner": "ARIMA",
+  "residual_sigma": 5915.335379997325,
+  "mean_daily_redemption": 52744.50537164589,
+  "forecast_cv": 0.112150741358118
+}
